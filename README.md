@@ -8,6 +8,8 @@ This component builds on the ['layer' concept of THREE.js] (https://github.com/m
 
 If a video is used in a sphere with the 'stereo' component active, **the component will also enable playback in mobile devices, by attaching a 'click' event on the rendering canvas**. Thus, in mobile devices you must click on the screen (via cardboard v2.0 button or with your finger) for the video to start playing.
 
+**NOTE: for some reason (?) if the video elment is put inside scene 'assets' tag, a cross-origin issue is raised **
+
 You can see demos for both examples below [here] (http://oscarmarinmiro.github.io/aframe-stereo-component)
 
 ### 'stereocam' component properties (only for camera)
@@ -21,6 +23,7 @@ You can see demos for both examples below [here] (http://oscarmarinmiro.github.i
 | -------- | ----------- | ------------- |
 | eye      |  in which eye the entity is render VR mode ('left' or 'right')           | 'left               |
 | mode     | this property is for spheres holding a video texture. mode can be 'full' or 'half', depending if the original video is full 360 or only spans 180 degrees horizontally (half-dome)| 'full' |
+| split    | this property indicates whether to split the video texture horizontally (left and right hemispheres), or vertically, (top and bottom hemispheres) | 'horizontal'
 
 ### Usage
 
@@ -40,7 +43,6 @@ Install and use by directly including the [browser files](dist):
 <body>
     <a-scene>
 
-    <a-assets>
 
 <!--
       stereoscopic panoramic render by
@@ -50,7 +52,6 @@ Install and use by directly including the [browser files](dist):
       <!-- side by side equirectangular projected video -->
       <video id="Mary" src="examples/basic_development/textures/MaryOculus.webm" loop></video>
 
-    </a-assets>
 
       <!-- we tell here the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
       and it it's active, only render those entities in the 'left' eye -->
@@ -119,8 +120,45 @@ Install and use by directly including the [browser files](dist):
  </body>
  </html>
 
-
 ```
+
+#### Stereoscopic videos that are split vertically - Top and Bottom
+
+Install and use by directly including the [browser files](dist):
+
+```html
+<html>
+<head>
+  <title>My A-Frame Scene</title>
+  <script src="https://aframe.io/releases/latest/aframe.min.js"></script>
+  <script src="aframe-stereo-component.js.min.js"></script>
+</head>
+<body>
+  <a-scene>
+  <!-- top and bottom equirectangular projected video -->
+  <video id="video" src="path/to/top-bottom/mp4" loop></video>
+
+
+    <!-- here we tell the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
+    and if it's active, only render those entities in the 'left' eye -->
+    <a-camera position="0 0 10" cursor-visible="false" stereocam="eye:left;"></a-camera>
+
+    <!-- native sphere, will render on 'left' eye, and will take only the first half (top) of the video for projection -->
+    <a-entity geometry="primitive: sphere; radius: 100; segmentsWidth: 64; segmentsHeight: 64;"
+        material="shader: flat; src: #video;"
+        scale="-1 1 1" stereo="eye:left; split: vertical">
+    </a-entity>
+
+    <!-- native sphere, will render on 'right' eye, and will take only the second half (bottom) of the video for projection -->
+    <a-entity geometry="primitive: sphere; radius: 100; segmentsWidth: 64; segmentsHeight: 64;"
+        material="shader: flat; src: #video;"
+        scale="-1 1 1" stereo="eye:right; split: vertical">
+    </a-entity>
+  </a-scene>
+ </body>
+ </html>
+```
+
 
 #### NPM Installation
 

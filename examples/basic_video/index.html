@@ -5,24 +5,18 @@
   </head>
   <body>
 
+
     <a-scene>
 
-    <a-assets>
-
-<!--
-      stereoscopic panoramic render by
-      http://pedrofe.com/rendering-for-oculus-rift-with-arnold/
-      http://www.meryproject.com/
- -->
-
       <video id="Mary" loop>
-          <source src="textures/MaryOculus.webm" type="video/webm"/>
           <source src="textures/MaryOculus.mp4" type="video/mp4"/>
       </video>
 
-    </a-assets>
 
-      <a-camera position="0 0 10" cursor-visible="false" stereocam="eye:left;"></a-camera>
+
+
+
+      <a-camera position="0 0 10" stereocam="eye:left;"></a-camera>
 
       <a-entity geometry="primitive: sphere;
                       radius: 100;
@@ -39,6 +33,7 @@
               material="shader: flat; src:#Mary;"
               scale="-1 1 1" stereo="eye:right">
       </a-entity>
+
 
 
     </a-scene>
